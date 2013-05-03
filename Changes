@@ -1,5 +1,10 @@
 Revision history for Term-Detect
 
+0.03    2013-05-03 (SHARYANTO)
+
+        No functional changes. Avoid perl undef warning.
+
+
 0.02    2013-05-03 (SHARYANTO)
 
         Return terminal emulator information (software, color depth, unicode,

@@ -1,5 +1,11 @@
 Revision history for Term-Detect
 
+0.02    2013-05-03 (SHARYANTO)
+
+        Return terminal emulator information (software, color depth, unicode,
+        etc).
+
+
 0.01    2013-03-21 (SHARYANTO)
 
         First release.

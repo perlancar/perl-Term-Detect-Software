@@ -13,6 +13,7 @@ our @EXPORT_OK = qw(detect_terminal);
 
 sub detect_terminal {
     my ($flag) = @_;
+    $flag //= "";
 
     return undef unless $ENV{TERM};
 

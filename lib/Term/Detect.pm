@@ -5,6 +5,8 @@ use strict;
 use warnings;
 #use Log::Any '$log';
 
+use SHARYANTO::Proc::Util qw(get_parent_processes);
+
 # VERSION
 
 require Exporter;
@@ -22,10 +24,10 @@ sub detect_terminal {
   DETECT:
     {
         if ($flag =~ /p/) {
-            my $out = `pstree -As $$`;
-            my @p = split /---/, $out;
-            my $proc = $p[-4] // ''; # -1 is pstree, -2 is perl, -3 is shell
-            #say "D:out=$out, proc=$proc";
+            my $ppids = get_parent_processes();
+            # 0 is shell
+            my $proc = $ppids && @$ppids >= 1 ? $ppids->[1]{name} : '';
+            say "D:out=$out, proc=$proc";
             if ($proc ~~ [qw/gnome-terminal guake xfce4-terminal mlterm lxterminal/]) {
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'gnome-terminal';

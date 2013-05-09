@@ -137,6 +137,12 @@ Whether terminal supports Unicode/wide characters.
 =back
 
 
+=head1 TODO
+
+Better detection of terminal emulator's background color by peeking into its
+configuration.
+
+
 =head1 SEE ALSO
 
 =cut

@@ -1,5 +1,11 @@
 Revision history for Term-Detect
 
+0.04    2013-05-09 (SHARYANTO)
+
+        Split pstree parsing to its own module (SHARYANTO::Proc::Util), avoid
+        using pstree -s option because it's not supported in older version.
+
+
 0.03    2013-05-03 (SHARYANTO)
 
         No functional changes. Avoid perl undef warning.

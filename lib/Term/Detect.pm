@@ -27,7 +27,7 @@ sub detect_terminal {
             my $ppids = get_parent_processes();
             # 0 is shell
             my $proc = $ppids && @$ppids >= 1 ? $ppids->[1]{name} : '';
-            say "D:out=$out, proc=$proc";
+            #say "D:proc=$proc";
             if ($proc ~~ [qw/gnome-terminal guake xfce4-terminal mlterm lxterminal/]) {
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'gnome-terminal';

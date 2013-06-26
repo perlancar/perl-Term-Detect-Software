@@ -1,9 +1,9 @@
 package Term::Detect;
 
 use 5.010001;
-use experimental 'smartmatch';
 use strict;
 use warnings;
+use experimental 'smartmatch';
 #use Log::Any '$log';
 
 use SHARYANTO::Proc::Util qw(get_parent_processes);

@@ -24,7 +24,7 @@ sub detect_terminal {
 
   DETECT:
     {
-        if ($flag =~ /p/) {
+        if ($flag =~ /p/ && $^O !~ /Win/) {
             my $ppids = get_parent_processes();
             # 0 is shell
             my $proc = $ppids && @$ppids >= 1 ? $ppids->[1]{name} : '';

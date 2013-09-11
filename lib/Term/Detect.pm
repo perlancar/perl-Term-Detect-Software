@@ -86,12 +86,13 @@ sub detect_terminal {
             }
         }
 
-    }
+    } # DETECT
+
     $info;
 }
 
 1;
-#ABSTRACT: Detect running under terminal (and get terminal emulator information)
+#ABSTRACT: Detect running under terminal (and get terminal information)
 
 =head1 SYNOPSIS
 
@@ -106,9 +107,20 @@ sub detect_terminal {
 
 =head2 detect_terminal([$flag]) => ANY
 
-Return undef if not detected running under terminal.
+Return undef if not detected running under terminal. Otherwise return a hash of
+information about terminal (emulator software, color depth). Some information
+are only returned if requested via C<$flag>, for performance reason.
 
-Otherwise, return a hash of information, currently includes:
+C<$flag> is a string and can contain one or more characters to enable/request
+extra information. Currently known flags:
+
+=over
+
+=item * p (for parent processes)
+
+=back
+
+Result:
 
 =over
 

@@ -12,7 +12,15 @@ use SHARYANTO::Proc::Util qw(get_parent_processes);
 
 require Exporter;
 our @ISA       = qw(Exporter);
-our @EXPORT_OK = qw(detect_terminal);
+our @EXPORT_OK = qw(detect_terminal detect_terminal_cached);
+
+my $dt_cache;
+sub detect_terminal_cached {
+    if (!$dt_cache) {
+        $dt_cache = detect_terminal(@_);
+    }
+    $dt_cache;
+}
 
 sub detect_terminal {
     my ($flag) = @_;
@@ -148,6 +156,11 @@ while Konsole is assumed to have black (000000).
 Whether terminal supports Unicode/wide characters.
 
 =back
+
+=head2 detect_terminal_cached([$flag]) => ANY
+
+Just like C<detect_terminal()> but will cache the result. Can be used by
+applications or modules to avoid repeating detection process.
 
 
 =head1 TODO

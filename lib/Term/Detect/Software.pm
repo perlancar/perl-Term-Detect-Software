@@ -84,7 +84,7 @@ sub detect_terminal {
             $info->{color_depth}       = 16;
             $info->{unicode}           = 0;
             $info->{default_bgcolor}   = '000000';
-            $info->{box_chars}         = 1;
+            $info->{box_chars}         = 0;
             last DETECT;
         }
 

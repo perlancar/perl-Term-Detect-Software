@@ -1,4 +1,12 @@
-Revision history for Term-Detect
+Revision history for Term-Detect-Software
+
+0.09    2013-09-28 (SHARYANTO) (not yet released)
+
+        [INCOMPATIBLE CHANGES]
+
+        - Rename dist from Term-Detect to Term-Detect-Software and document its
+          raison d'être (to respond to a CPAN Ratings review by DOLMEN).
+
 
 0.08    2013-09-25 (SHARYANTO)
 

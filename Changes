@@ -1,8 +1,13 @@
 Revision history for Term-Detect-Software
 
-0.09    2013-09-28 (SHARYANTO)
+0.10    2013-09-28 (SHARYANTO)
 
-        [INCOMPATIBLE CHANGES]
+        - Detect cygwin.
+
+        - Fix box_chars setting of windows.
+
+
+0.09    2013-09-28 (SHARYANTO)
 
         - Rename dist from Term-Detect to Term-Detect-Software and document its
           raison d'être (to respond to a CPAN Ratings review by DOLMEN).

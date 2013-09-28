@@ -45,6 +45,16 @@ sub detect_terminal {
             last DETECT;
         }
 
+        # cygwin terminal
+        if ($ENV{TERM} eq 'xterm' && ($ENV{OSTYPE} // '') eq 'cygwin') {
+            $info->{emulator_engine} = 'cygwin';
+            $info->{color_depth}     = 16;
+            $info->{default_bgcolor} = '000000';
+            $info->{unicode}         = 0; # CONFIRM?
+            $info->{box_chars}       = 1;
+            last DETECT;
+        }
+
         if ($ENV{TERM} eq 'linux') {
             # Linux virtual console
             $info->{emulator_engine} = 'linux';
@@ -188,7 +198,7 @@ Result:
 =item * emulator_engine => STR
 
 Possible values: konsole, xterm, gnome-terminal, rxvt, pterm (PuTTY), xvt,
-windows (CMD.EXE).
+windows (CMD.EXE), cygwin.
 
 =item * emulator_software => STR
 

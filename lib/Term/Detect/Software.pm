@@ -148,6 +148,11 @@ sub detect_terminal {
             unless (exists $info->{color_depth}) {
                 if ($ENV{TERM} =~ /256color/) {
                     $info->{color_depth} = 256;
+                } else {
+                    require File::Which;
+                    if (File::Which::which("tput")) {
+                        $info->{color_depth} = `tput colors` + 0;
+                    }
                 }
             }
 

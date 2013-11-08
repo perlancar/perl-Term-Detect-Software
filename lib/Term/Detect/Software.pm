@@ -72,7 +72,11 @@ sub detect_terminal {
         my $set_gnome_terminal_term = sub {
             $info->{emulator_software} = $_[0];
             $info->{emulator_engine}   = 'gnome-terminal';
-            $info->{color_depth}       = 256;
+
+            # xfce4-terminal only shows 16 color, despite being
+            # gnome-terminal-based?
+            $info->{color_depth}       = $_[0] =~ /xfce4/ ? 16 : 256;
+
             $info->{unicode}           = 1;
             if ($_[0] ~~ [qw/mlterm/]) {
                 $info->{default_bgcolor} = 'ffffff';

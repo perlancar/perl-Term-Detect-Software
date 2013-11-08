@@ -1,5 +1,13 @@
 Revision history for Term-Detect-Software
 
+0.12    2013-11-08 (SHARYANTO)
+
+        - Use 'tput colors' as last resort (e.g. for TERM=screen under
+          screen/tmux).
+
+        - Set color depth for xfce4 as 16 instead of 256.
+
+
 0.11    2013-10-10 (SHARYANTO)
 
         - Detect dumb terminal (e.g. CGI environment) vs Windows command prompt.

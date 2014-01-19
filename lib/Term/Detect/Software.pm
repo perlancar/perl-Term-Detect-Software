@@ -199,8 +199,8 @@ software and its capabilities/settings. Return empty hashref if not detected
 running under termina (i.e. C<$ENV{TERM}> is undef).
 
 Detection method is tried from the easiest/cheapest (e.g. checking environment
-variables) or by looking at known process names in the process tree (using the
-B<pstree> command). Terminal capabilities is determined using heuristics.
+variables) or by looking at known process names in the process tree. Terminal
+capabilities is determined using heuristics.
 
 Currently Konsole and Konsole-based terminals (like Yakuake) can be detected
 through existence of environment variables C<KONSOLE_DBUS_SERVICE> or

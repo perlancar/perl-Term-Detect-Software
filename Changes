@@ -1,5 +1,11 @@
 Revision history for Term-Detect-Software
 
+0.13    2014-01-18 (SHARYANTO)
+
+        - No functional changes. Remove mention of 'pstree' command because
+          that's up to get_parent_processes()'s implementation.
+
+
 0.12    2013-11-08 (SHARYANTO)
 
         - Use 'tput colors' as last resort (e.g. for TERM=screen under

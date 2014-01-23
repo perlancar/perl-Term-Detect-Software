@@ -1,5 +1,10 @@
 Revision history for Term-Detect-Software
 
+0.14    2014-01-23 (SHARYANTO)
+
+        - Detect running under Emacs (M-x shell) and turn off box_chars if so.
+
+
 0.13    2014-01-18 (SHARYANTO)
 
         - No functional changes. Remove mention of 'pstree' command because

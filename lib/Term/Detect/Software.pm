@@ -170,6 +170,14 @@ sub detect_terminal {
 
     } # DETECT
 
+    # some additional detections
+
+    # we're running under emacs, it doesn't support box chars
+    if ($ENV{INSIDE_EMACS}) {
+        $info->{inside_emacs} = 1;
+        $info->{box_chars} = 0;
+    }
+
     $info;
 }
 

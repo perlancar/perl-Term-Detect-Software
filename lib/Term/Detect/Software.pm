@@ -21,13 +21,18 @@ sub detect_terminal_cached {
 }
 
 sub detect_terminal {
-    my $info = {};
+    my @dbg;
+    my $info = {_debug_info=>\@dbg};
 
   DETECT:
     {
-        last DETECT unless defined $ENV{TERM};
+        unless (defined $ENV{TERM}) {
+            push @dbg, "skip: TERM env undefined";
+            last DETECT;
+        }
 
         if ($ENV{KONSOLE_DBUS_SERVICE} || $ENV{KONSOLE_DBUS_SESSION}) {
+            push @dbg, "detect: konsole via KONSOLE_DBUS_{SERVICE,SESSION} env";
             $info->{emulator_engine} = 'konsole';
             $info->{color_depth}     = 2**24;
             $info->{default_bgcolor} = '000000';
@@ -37,6 +42,7 @@ sub detect_terminal {
         }
 
         if ($ENV{XTERM_VERSION}) {
+            push @dbg, "detect: xterm via XTERM_VERSION env";
             $info->{emulator_engine} = 'xterm';
             $info->{color_depth}     = 256;
             $info->{default_bgcolor} = 'ffffff';
@@ -47,6 +53,7 @@ sub detect_terminal {
 
         # cygwin terminal
         if ($ENV{TERM} eq 'xterm' && ($ENV{OSTYPE} // '') eq 'cygwin') {
+            push @dbg, "detect: xterm via TERM env (cygwin)";
             $info->{emulator_engine} = 'cygwin';
             $info->{color_depth}     = 16;
             $info->{default_bgcolor} = '000000';
@@ -56,6 +63,7 @@ sub detect_terminal {
         }
 
         if ($ENV{TERM} eq 'linux') {
+            push @dbg, "detect: linux via TERM env";
             # Linux virtual console
             $info->{emulator_engine} = 'linux';
             $info->{color_depth}     = 16;
@@ -87,12 +95,14 @@ sub detect_terminal {
         };
 
         if (($ENV{COLORTERM} // '') ~~ $gnome_terminal_terms) {
+            push @dbg, "detect: gnome-terminal via COLORTERM";
             $set_gnome_terminal_term->($ENV{COLORTERM});
             last DETECT;
         }
 
         # Windows command prompt
         if ($ENV{TERM} eq 'dumb' && $ENV{windir}) {
+            push @dbg, "detect: windows via TERM & windir env";
             $info->{emulator_software} = 'windows';
             $info->{emulator_engine}   = 'windows';
             $info->{color_depth}       = 16;
@@ -104,6 +114,7 @@ sub detect_terminal {
 
         # run under CGI or something like that
         if ($ENV{TERM} eq 'dumb') {
+            push @dbg, "detect: dumb via TERM env";
             $info->{emulator_software} = 'dumb';
             $info->{emulator_engine}   = 'dumb';
             $info->{color_depth}       = 0;
@@ -114,19 +125,23 @@ sub detect_terminal {
         }
 
         {
-            last if $^O !~ /Win/;
+            last if $^O =~ /Win/;
 
             require SHARYANTO::Proc::Util;
             my $ppids = SHARYANTO::Proc::Util::get_parent_processes();
-            last unless defined($ppids);
+            unless (defined $ppids) {
+                push @dbg, "skip: get_parent_processes returns undef";
+            }
 
             # [0] is shell
             my $proc = @$ppids >= 1 ? $ppids->[1]{name} : '';
             #say "D:proc=$proc";
             if ($proc ~~ $gnome_terminal_terms) {
+                push @dbg, "detect: gnome-terminal via procname ($proc)";
                 $set_gnome_terminal_term->($proc);
                 last DETECT;
             } elsif ($proc ~~ [qw/rxvt mrxvt/]) {
+                push @dbg, "detect: rxvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'rxvt';
                 $info->{color_depth}       = 16;
@@ -135,6 +150,7 @@ sub detect_terminal {
                 $info->{box_chars}         = 1;
                 last DETECT;
             } elsif ($proc ~~ [qw/pterm/]) {
+                push @dbg, "detect: pterm via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'putty';
                 $info->{color_depth}       = 256;
@@ -142,6 +158,7 @@ sub detect_terminal {
                 $info->{default_bgcolor}   = '000000';
                 last DETECT;
             } elsif ($proc ~~ [qw/xvt/]) {
+                push @dbg, "detect: xvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'xvt';
                 $info->{color_depth}       = 0; # only support bold
@@ -155,11 +172,14 @@ sub detect_terminal {
         {
             unless (exists $info->{color_depth}) {
                 if ($ENV{TERM} =~ /256color/) {
+                    push @dbg, "detect color_depth: 256 via TERM env";
                     $info->{color_depth} = 256;
                 } else {
                     require File::Which;
                     if (File::Which::which("tput")) {
-                        $info->{color_depth} = `tput colors` + 0;
+                        my $res = `tput colors` + 0;
+                        push @dbg, "detect color_depth: $res via tput";
+                        $info->{color_depth} = $res;
                     }
                 }
             }

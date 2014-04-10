@@ -1,5 +1,12 @@
 Revision history for Term-Detect-Software
 
+0.15    2014-04-10 (SHARYANTO)
+
+        - Require SHARYANTO::Proc::Util.
+
+        - Add debug info in result.
+
+
 0.14    2014-01-23 (SHARYANTO)
 
         - Detect running under Emacs (M-x shell) and turn off box_chars if so.

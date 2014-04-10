@@ -113,11 +113,15 @@ sub detect_terminal {
             last DETECT;
         }
 
-        require SHARYANTO::Proc::Util;
-        if ($^O !~ /Win/) {
+        {
+            last if $^O !~ /Win/;
+
+            require SHARYANTO::Proc::Util;
             my $ppids = SHARYANTO::Proc::Util::get_parent_processes();
+            last unless defined($ppids);
+
             # [0] is shell
-            my $proc = $ppids && @$ppids >= 1 ? $ppids->[1]{name} : '';
+            my $proc = @$ppids >= 1 ? $ppids->[1]{name} : '';
             #say "D:proc=$proc";
             if ($proc ~~ $gnome_terminal_terms) {
                 $set_gnome_terminal_term->($proc);

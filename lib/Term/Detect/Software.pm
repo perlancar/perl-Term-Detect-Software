@@ -131,6 +131,7 @@ sub detect_terminal {
             my $ppids = SHARYANTO::Proc::Util::get_parent_processes();
             unless (defined $ppids) {
                 push @dbg, "skip: get_parent_processes returns undef";
+                last;
             }
 
             # [0] is shell

@@ -1,5 +1,14 @@
 Revision history for Term-Detect-Software
 
+0.16    2014-06-09 (SHARYANTO)
+
+        - No functional changes.
+
+        - [dist] Make dependencies to SHARYANTO::Proc::Util optional on some
+          OS'es (to make this module, and eventually Text::ANSITable,
+          installable on Windows).
+
+
 0.15    2014-04-10 (SHARYANTO)
 
         - Require SHARYANTO::Proc::Util.

@@ -1,5 +1,12 @@
 Revision history for Term-Detect-Software
 
+0.17    2014-07-01 (SHARYANTO)
+
+        - No functional changes.
+
+        - Add some more OSPrereqs's for midnightbsd, netbsd, gnukfreebsd [CT].
+
+
 0.16    2014-06-09 (SHARYANTO)
 
         - No functional changes.

@@ -1,5 +1,12 @@
 Revision history for Term-Detect-Software
 
+0.18    2014-11-22 (PERLANCAR)
+
+	- Set emulator_{engine,software} keys to '' when failing to detect
+	  running under terminal, for convenience (no need to check for
+	  definedness).
+
+
 0.17    2014-07-01 (SHARYANTO)
 
         - No functional changes.

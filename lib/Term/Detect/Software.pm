@@ -1,12 +1,13 @@
 package Term::Detect::Software;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 use warnings;
 use experimental 'smartmatch';
 #use Log::Any '$log';
-
-# VERSION
 
 require Exporter;
 our @ISA       = qw(Exporter);
@@ -129,8 +130,8 @@ sub detect_terminal {
         {
             last if $^O =~ /Win/;
 
-            require SHARYANTO::Proc::Util;
-            my $ppids = SHARYANTO::Proc::Util::get_parent_processes();
+            require Proc::Find::Parents;
+            my $ppids = Proc::Find::Parents::get_parent_processes();
             unless (defined $ppids) {
                 push @dbg, "skip: get_parent_processes returns undef";
                 last;

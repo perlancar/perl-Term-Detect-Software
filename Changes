@@ -1,5 +1,13 @@
 Revision history for Term-Detect-Software
 
+0.19    2014-12-05 (PERLANCAR)
+
+	- No functional changes.
+
+	- Use the new renamed module SHARYANTO::Proc::Util ->
+	  Proc::Find::Parents.
+
+
 0.18    2014-11-22 (PERLANCAR)
 
 	- Set emulator_{engine,software} keys to '' when failing to detect

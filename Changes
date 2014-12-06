@@ -1,5 +1,13 @@
 Revision history for Term-Detect-Software
 
+0.20    2014-12-06 (PERLANCAR)
+
+	- No functional changes.
+
+	- [Bugfix] Forgot to include 'darwin' when replacing multiple
+	  OSPrereqs directive with a single one [GH#1].
+
+
 0.19    2014-12-05 (PERLANCAR)
 
 	- No functional changes.

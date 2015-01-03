@@ -314,17 +314,6 @@ Term::Terminfo currently doesn't recognize Konsole's 24bit color support and
 only gives C<max_colors> 256.
 
 
-=head1 TODO
-
-=over
-
-=item * Better detection of terminal emulator's background color
-
-By peeking into its configuration.
-
-=back
-
-
 =head1 SEE ALSO
 
 L<Term::Terminfo>

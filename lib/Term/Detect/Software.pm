@@ -153,6 +153,15 @@ sub detect_terminal {
                 $info->{default_bgcolor}   = 'd6d2d0';
                 $info->{box_chars}         = 1;
                 last DETECT;
+            } elsif ($proc eq 'st' && $ENV{TERM} eq 'xterm-256color') {
+                push @dbg, "detect: st via procname";
+                $info->{emulator_software} = 'st';
+                $info->{emulator_engine}   = 'st';
+                $info->{color_depth}       = 256;
+                $info->{unicode}           = 1;
+                $info->{default_bgcolor}   = '000000';
+                $info->{box_chars}         = 1; # some characters are currently flawed though as of 0.6
+                last DETECT;
             } elsif ($proc ~~ [qw/pterm/]) {
                 push @dbg, "detect: pterm via procname ($proc)";
                 $info->{emulator_software} = $proc;

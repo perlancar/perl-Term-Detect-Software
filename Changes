@@ -1,3 +1,11 @@
+0.221   2019-08-18  Released-By: PERLANCAR; Urgency: low
+
+	- No functional changes.
+
+	- [doc] Update doc to list 'st' as one of the supported terminal
+	  emulators detected.
+
+
 0.220   2019-08-18  Released-By: PERLANCAR; Urgency: medium
 
 	- Detect st (terminal emulation software from suckless.org).

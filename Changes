@@ -1,3 +1,10 @@
+0.220   2019-08-18  Released-By: PERLANCAR; Urgency: medium
+
+	- Detect st (terminal emulation software from suckless.org).
+
+	- [doc] Fix POD typo.
+
+
 0.21    2015-01-03  Released-By: PERLANCAR
 
 	- No functional changes.

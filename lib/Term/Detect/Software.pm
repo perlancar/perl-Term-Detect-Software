@@ -269,14 +269,15 @@ Result:
 =item * emulator_engine => STR
 
 Possible values: C<konsole>, C<xterm>, C<gnome-terminal>, C<rxvt>, C<pterm>
-(PuTTY), C<xvt>, C<windows> (CMD.EXE), C<cygwin>, or empty string (if not
-detected running under terminal).
+(PuTTY), C<xvt>, C<windows> (CMD.EXE), C<cygwin>, C<st> (suckless.org's terminal
+emulator), or empty string (if not detected running under terminal).
 
 =item * emulator_software => STR
 
 Either: C<xfce4-terminal>, C<guake>, C<gnome-terminal>, C<mlterm>,
-C<lxterminal>, C<rxvt>, C<mrxvt>, C<putty>, C<xvt>, C<windows> (CMD.EXE), or
-empty string (if not detected running under terminal).
+C<lxterminal>, C<rxvt>, C<mrxvt>, C<putty>, C<xvt>, C<windows> (CMD.EXE), C<st>
+(suckless.org's terminal emulator), or empty string (if not detected running
+under terminal).
 
 =item * color_depth => INT
 

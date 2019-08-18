@@ -278,7 +278,7 @@ Either: C<xfce4-terminal>, C<guake>, C<gnome-terminal>, C<mlterm>,
 C<lxterminal>, C<rxvt>, C<mrxvt>, C<putty>, C<xvt>, C<windows> (CMD.EXE), or
 empty string (if not detected running under terminal).
 
-w=item * color_depth => INT
+=item * color_depth => INT
 
 Either 0 (does not support ANSI color codes), 16, 256, or 16777216 (2**24).
 

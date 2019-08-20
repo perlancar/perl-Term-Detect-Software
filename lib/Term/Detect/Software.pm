@@ -192,6 +192,7 @@ sub detect_terminal {
                     if (File::Which::which("tput")) {
                         my $res = `tput colors` + 0;
                         push @dbg, "detect color_depth: $res via tput";
+                        $res = 16 if $res == 8; # 8 is basically 16 (8 low-intensity + 8 high-intensity)
                         $info->{color_depth} = $res;
                     }
                 }

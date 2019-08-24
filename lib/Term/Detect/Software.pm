@@ -311,13 +311,13 @@ applications or modules to avoid repeating detection process.
 
 =head2 What is this module for? Why not Term::Terminfo or Term::Encoding?
 
-This module is first written for L<Text::ANSITable> so that the module can
+This module was first written for L<Text::ANSITable> so that the latter can
 provide good defaults when displaying formatted and colored tables, especially
 on popular terminal emulation software like Konsole (KDE's default terminal),
 gnome-terminal (GNOME's default), Terminal (XFCE's default), xterm, rxvt.
 
-The module works by trying to figure out the terminal emulation software because
-the information provided by L<Term::Terminfo> and L<Term::Encoding> are
+This module works by trying to figure out the terminal emulation software
+because the information provided by L<Term::Terminfo> and L<Term::Encoding> are
 sometimes not specific enough. For example, Term::Encoding can return L<utf-8>
 when running under rxvt, but since the software currently lacks Unicode support
 we shouldn't display Unicode characters. Another example is color depth:

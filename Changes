@@ -79,8 +79,10 @@
 
 0.13    2014-01-18  Released-By: SHARYANTO
 
-        - No functional changes. Remove mention of 'pstree' command because
-          that's up to get_parent_processes()'s implementation.
+        - No functional changes.
+
+        - [doc] Remove mention of 'pstree' command because that's up to
+          get_parent_processes()'s implementation.
 
 
 0.12    2013-11-08  Released-By: SHARYANTO
@@ -123,13 +125,17 @@
 
 0.06    2013-06-26  Released-By: SHARYANTO
 
-        - No functional changes. Second attempt: 'use experimental "smartmatch"'
-          must be given after 'use warnings'.
+        - No functional changes.
+
+        - Second attempt: 'use experimental "smartmatch"' must be given after
+          'use warnings'.
 
 
 0.05    2013-06-26  Released-By: SHARYANTO
 
-        - No functional changes. Add 'use experimental "smartmatch"' for 5.18+.
+        - No functional changes.
+
+        - Add 'use experimental "smartmatch"' for 5.18+.
 
 
 0.04    2013-05-09  Released-By: SHARYANTO
@@ -140,7 +146,9 @@
 
 0.03    2013-05-03  Released-By: SHARYANTO
 
-        - No functional changes. Avoid perl undef warning.
+        - No functional changes.
+
+        - Avoid perl undef warning.
 
 
 0.02    2013-05-03  Released-By: SHARYANTO

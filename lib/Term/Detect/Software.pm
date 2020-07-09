@@ -1,6 +1,8 @@
 package Term::Detect::Software;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use 5.010001;
@@ -138,7 +140,7 @@ sub detect_terminal {
             }
 
             # [0] is shell
-            my $proc = @$ppids >= 1 ? $ppids->[1]{name} : '';
+            my $proc = @$ppids >= 2 ? $ppids->[1]{name} : '';
             #say "D:proc=$proc";
             if ($proc ~~ $gnome_terminal_terms) {
                 push @dbg, "detect: gnome-terminal via procname ($proc)";

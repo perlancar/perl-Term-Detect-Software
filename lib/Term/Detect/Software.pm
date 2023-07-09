@@ -1,18 +1,16 @@
 package Term::Detect::Software;
 
+use 5.010001;
+use strict;
+use warnings;
+
+use Exporter qw(import);
+
 # AUTHORITY
 # DATE
 # DIST
 # VERSION
 
-use 5.010001;
-use strict;
-use warnings;
-use experimental 'smartmatch';
-#use Log::Any '$log';
-
-require Exporter;
-our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(detect_terminal detect_terminal_cached);
 
 my $dt_cache;
@@ -91,7 +89,7 @@ sub detect_terminal {
             $info->{color_depth}       = $_[0] =~ /xfce4/ ? 16 : 256;
 
             $info->{unicode}           = 1;
-            if ($_[0] ~~ [qw/mlterm/]) {
+            if (grep { $_ eq $_[0] } (qw/mlterm/)) {
                 $info->{default_bgcolor} = 'ffffff';
             } else {
                 $info->{default_bgcolor} = '000000';
@@ -99,7 +97,7 @@ sub detect_terminal {
             $info->{box_chars} = 1;
         };
 
-        if (($ENV{COLORTERM} // '') ~~ $gnome_terminal_terms) {
+        if (grep { $_ eq ($ENV{COLORTERM} // '') } @$gnome_terminal_terms) {
             push @dbg, "detect: gnome-terminal via COLORTERM";
             $set_gnome_terminal_term->($ENV{COLORTERM});
             last DETECT;
@@ -142,11 +140,11 @@ sub detect_terminal {
             # [0] is shell
             my $proc = @$ppids >= 2 ? $ppids->[1]{name} : '';
             #say "D:proc=$proc";
-            if ($proc ~~ $gnome_terminal_terms) {
+            if (grep { $_ eq $proc } @$gnome_terminal_terms) {
                 push @dbg, "detect: gnome-terminal via procname ($proc)";
                 $set_gnome_terminal_term->($proc);
                 last DETECT;
-            } elsif ($proc ~~ [qw/rxvt mrxvt/]) {
+            } elsif (grep { $_ eq $proc } (qw/rxvt mrxvt/)) {
                 push @dbg, "detect: rxvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'rxvt';
@@ -164,7 +162,7 @@ sub detect_terminal {
                 $info->{default_bgcolor}   = '000000';
                 $info->{box_chars}         = 1; # some characters are currently flawed though as of 0.6
                 last DETECT;
-            } elsif ($proc ~~ [qw/pterm/]) {
+            } elsif (grep { $_ eq $proc } (qw/pterm/)) {
                 push @dbg, "detect: pterm via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'putty';
@@ -172,7 +170,7 @@ sub detect_terminal {
                 $info->{unicode}           = 0;
                 $info->{default_bgcolor}   = '000000';
                 last DETECT;
-            } elsif ($proc ~~ [qw/xvt/]) {
+            } elsif (grep { $_ eq $proc } (qw/xvt/)) {
                 push @dbg, "detect: xvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
                 $info->{emulator_engine}   = 'xvt';

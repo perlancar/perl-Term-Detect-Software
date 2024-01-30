@@ -21,12 +21,94 @@ sub detect_terminal_cached {
     $dt_cache;
 }
 
+sub _set_engine {
+    my ($info, $engine) = @_;
+    if ($engine eq 'konsole') {
+        $info->{emulator_engine} = 'konsole';
+        $info->{color_depth}     = 2**24;
+        $info->{default_bgcolor} = '000000';
+        $info->{unicode}         = 1;
+        $info->{box_chars}       = 1;
+    } elsif ($engine eq 'xterm') {
+        $info->{emulator_engine} = 'xterm';
+        $info->{color_depth}     = 256;
+        $info->{default_bgcolor} = 'ffffff';
+        $info->{unicode}         = 0;
+        $info->{box_chars}       = 1;
+    } elsif ($engine eq 'cygwin') {
+        $info->{emulator_engine} = 'cygwin';
+        $info->{color_depth}     = 16;
+        $info->{default_bgcolor} = '000000';
+        $info->{unicode}         = 0; # CONFIRM?
+        $info->{box_chars}       = 1;
+    } elsif ($engine eq 'linux') {
+        # Linux virtual console
+        $info->{emulator_engine} = 'linux';
+        $info->{color_depth}     = 16;
+        $info->{default_bgcolor} = '000000';
+        # actually it can show a few Unicode characters like single borders
+        $info->{unicode}         = 0;
+        $info->{box_chars}       = 0;
+    } elsif ($engine eq 'gnome-terminal') {
+        $info->{emulator_engine} = 'gnome-terminal';
+        $info->{unicode}           = 1;
+        $info->{box_chars} = 1;
+        # color_depth and default_bgcolor vary
+    } elsif ($engine eq 'windows') {
+        $info->{emulator_software} = 'windows';
+        $info->{emulator_engine}   = 'windows';
+        $info->{color_depth}       = 16;
+        $info->{unicode}           = 0;
+        $info->{default_bgcolor}   = '000000';
+        $info->{box_chars}         = 0;
+    } elsif ($engine eq 'dumb') {
+        # run under CGI or something like that
+        $info->{emulator_software} = 'dumb';
+        $info->{emulator_engine}   = 'dumb';
+        $info->{color_depth}       = 0;
+        # XXX how to determine unicode support?
+        $info->{default_bgcolor}   = '000000';
+        $info->{box_chars}         = 0;
+    } elsif ($engine eq 'rxvt') {
+        $info->{emulator_engine}   = 'rxvt';
+        $info->{color_depth}       = 16;
+        $info->{unicode}           = 0;
+        $info->{default_bgcolor}   = 'd6d2d0';
+        $info->{box_chars}         = 1;
+    } elsif ($engine eq 'st') {
+        $info->{emulator_software} = 'st';
+        $info->{emulator_engine}   = 'st';
+        $info->{color_depth}       = 256;
+        $info->{unicode}           = 1;
+        $info->{default_bgcolor}   = '000000';
+        $info->{box_chars}         = 1; # some characters are currently flawed though as of 0.6
+    } elsif ($engine eq 'putty') {
+        $info->{emulator_engine}   = 'putty';
+        $info->{color_depth}       = 256;
+        $info->{unicode}           = 0;
+        $info->{default_bgcolor}   = '000000';
+    } elsif ($engine eq 'xvt') {
+        $info->{emulator_engine}   = 'xvt';
+        $info->{color_depth}       = 0; # only support bold
+        $info->{unicode}           = 0;
+        $info->{default_bgcolor}   = 'd6d2d0';
+    } else {
+        die "Unknown engine '$engine'";
+    }
+}
+
 sub detect_terminal {
     my @dbg;
     my $info = {_debug_info=>\@dbg};
 
   DETECT:
     {
+        if (defined $ENV{PERL_TERM_DETECT_SOFTWARE_ENGINE}) {
+            push @dbg, "skip detect, set to '$ENV{PERL_TERM_DETECT_SOFTWARE_ENGINE}' via PERL_TERM_DETECT_SOFTWARE_ENGINE env";
+            _set_engine($info, $ENV{PERL_TERM_DETECT_SOFTWARE_ENGINE});
+            last DETECT;
+        }
+
         unless (defined $ENV{TERM}) {
             push @dbg, "skip: TERM env undefined";
             $info->{emulator_engine}   = '';
@@ -36,44 +118,25 @@ sub detect_terminal {
 
         if ($ENV{KONSOLE_DBUS_SERVICE} || $ENV{KONSOLE_DBUS_SESSION}) {
             push @dbg, "detect: konsole via KONSOLE_DBUS_{SERVICE,SESSION} env";
-            $info->{emulator_engine} = 'konsole';
-            $info->{color_depth}     = 2**24;
-            $info->{default_bgcolor} = '000000';
-            $info->{unicode}         = 1;
-            $info->{box_chars}       = 1;
+            _set_engine($info, 'konsole');
             last DETECT;
         }
 
         if ($ENV{XTERM_VERSION}) {
             push @dbg, "detect: xterm via XTERM_VERSION env";
-            $info->{emulator_engine} = 'xterm';
-            $info->{color_depth}     = 256;
-            $info->{default_bgcolor} = 'ffffff';
-            $info->{unicode}         = 0;
-            $info->{box_chars}       = 1;
+            _set_engine($info, 'xterm');
             last DETECT;
         }
 
-        # cygwin terminal
         if ($ENV{TERM} eq 'xterm' && ($ENV{OSTYPE} // '') eq 'cygwin') {
             push @dbg, "detect: xterm via TERM env (cygwin)";
-            $info->{emulator_engine} = 'cygwin';
-            $info->{color_depth}     = 16;
-            $info->{default_bgcolor} = '000000';
-            $info->{unicode}         = 0; # CONFIRM?
-            $info->{box_chars}       = 1;
+            _set_engine($info, 'cygwin');
             last DETECT;
         }
 
         if ($ENV{TERM} eq 'linux') {
             push @dbg, "detect: linux via TERM env";
-            # Linux virtual console
-            $info->{emulator_engine} = 'linux';
-            $info->{color_depth}     = 16;
-            $info->{default_bgcolor} = '000000';
-            # actually it can show a few Unicode characters like single borders
-            $info->{unicode}         = 0;
-            $info->{box_chars}       = 0;
+            _set_engine($info, 'linux');
             last DETECT;
         }
 
@@ -81,20 +144,18 @@ sub detect_terminal {
                                        mlterm lxterminal/];
 
         my $set_gnome_terminal_term = sub {
+            _set_engine($info, 'gnome-terminal');
             $info->{emulator_software} = $_[0];
-            $info->{emulator_engine}   = 'gnome-terminal';
 
             # xfce4-terminal only shows 16 color, despite being
             # gnome-terminal-based?
             $info->{color_depth}       = $_[0] =~ /xfce4/ ? 16 : 256;
 
-            $info->{unicode}           = 1;
             if (grep { $_ eq $_[0] } (qw/mlterm/)) {
                 $info->{default_bgcolor} = 'ffffff';
             } else {
                 $info->{default_bgcolor} = '000000';
             }
-            $info->{box_chars} = 1;
         };
 
         if (grep { $_ eq ($ENV{COLORTERM} // '') } @$gnome_terminal_terms) {
@@ -103,27 +164,15 @@ sub detect_terminal {
             last DETECT;
         }
 
-        # Windows command prompt
         if ($ENV{TERM} eq 'dumb' && $ENV{windir}) {
             push @dbg, "detect: windows via TERM & windir env";
-            $info->{emulator_software} = 'windows';
-            $info->{emulator_engine}   = 'windows';
-            $info->{color_depth}       = 16;
-            $info->{unicode}           = 0;
-            $info->{default_bgcolor}   = '000000';
-            $info->{box_chars}         = 0;
+            _set_engine($info, 'windows');
             last DETECT;
         }
 
-        # run under CGI or something like that
         if ($ENV{TERM} eq 'dumb') {
             push @dbg, "detect: dumb via TERM env";
-            $info->{emulator_software} = 'dumb';
-            $info->{emulator_engine}   = 'dumb';
-            $info->{color_depth}       = 0;
-            # XXX how to determine unicode support?
-            $info->{default_bgcolor}   = '000000';
-            $info->{box_chars}         = 0;
+            _set_engine($info, 'dumb');
             last DETECT;
         }
 
@@ -147,36 +196,21 @@ sub detect_terminal {
             } elsif (grep { $_ eq $proc } (qw/rxvt mrxvt/)) {
                 push @dbg, "detect: rxvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
-                $info->{emulator_engine}   = 'rxvt';
-                $info->{color_depth}       = 16;
-                $info->{unicode}           = 0;
-                $info->{default_bgcolor}   = 'd6d2d0';
-                $info->{box_chars}         = 1;
+                _set_engine($info, 'rxvt');
                 last DETECT;
             } elsif ($proc eq 'st' && $ENV{TERM} eq 'xterm-256color') {
                 push @dbg, "detect: st via procname";
-                $info->{emulator_software} = 'st';
-                $info->{emulator_engine}   = 'st';
-                $info->{color_depth}       = 256;
-                $info->{unicode}           = 1;
-                $info->{default_bgcolor}   = '000000';
-                $info->{box_chars}         = 1; # some characters are currently flawed though as of 0.6
+                _set_engine($info, 'st');
                 last DETECT;
             } elsif (grep { $_ eq $proc } (qw/pterm/)) {
                 push @dbg, "detect: pterm via procname ($proc)";
                 $info->{emulator_software} = $proc;
-                $info->{emulator_engine}   = 'putty';
-                $info->{color_depth}       = 256;
-                $info->{unicode}           = 0;
-                $info->{default_bgcolor}   = '000000';
+                _set_engine($info, 'putty');
                 last DETECT;
             } elsif (grep { $_ eq $proc } (qw/xvt/)) {
                 push @dbg, "detect: xvt via procname ($proc)";
                 $info->{emulator_software} = $proc;
-                $info->{emulator_engine}   = 'xvt';
-                $info->{color_depth}       = 0; # only support bold
-                $info->{unicode}           = 0;
-                $info->{default_bgcolor}   = 'd6d2d0';
+                _set_engine($info, 'xvt');
                 last DETECT;
             }
         }
@@ -305,6 +339,32 @@ Whether terminal supports box-drawing characters.
 
 Just like C<detect_terminal()> but will cache the result. Can be used by
 applications or modules to avoid repeating detection process.
+
+
+=head1 ENVIRONMENT
+
+=head2 PERL_TERM_DETECT_SOFTWARE_ENGINE
+
+String. Explicitly instruct Term::Detect::Software to use a specific engine,
+instead of heuristically trying to detect. This is useful for testing or for
+avoiding sometimes costly detection.
+
+List of supported engines:
+
+ konsole
+ xterm
+ cygwin
+ linux            # linux virtual console
+ gnome-terminal
+ windows          # windows command prompt
+ dumb             # dumb/generic, e.g. run under CGI or something like that
+ rxvt
+ st
+ putty
+ xvt
+
+For more details on the capabilities of each engine, currently please peruse the
+source code.
 
 
 =head1 FAQ

@@ -128,6 +128,12 @@ sub detect_terminal {
             last DETECT;
         }
 
+        if ($ENV{TERM} eq 'xterm-256color') {
+            push @dbg, "detect: xterm via TERM env";
+            _set_engine($info, 'xterm');
+            last DETECT;
+        }
+
         if ($ENV{TERM} eq 'xterm' && ($ENV{OSTYPE} // '') eq 'cygwin') {
             push @dbg, "detect: xterm via TERM env (cygwin)";
             _set_engine($info, 'cygwin');

@@ -4,6 +4,8 @@
           default because it's costly, to explicitly enable this one must
           now set PERL_TERM_DETECT_SOFTWARE_CHECK_PS to true.
 
+        - Downgrade dependency: Proc::Find::Parents to runtime recommends.
+
 
 0.225   2024-01-30  Released-By: PERLANCAR; Urgency: medium
 
